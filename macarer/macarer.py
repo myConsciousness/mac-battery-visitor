@@ -22,6 +22,18 @@ class Macarer:
     """
     Macarer is a script created to optimize the battery status of a MacBook, which monitors the battery status of the MacBook.
     Macarer sends notifications to a specified Line room when it detects overcharged and undercharged conditions.
+
+    By default, the environment variable 'LINE_NOTIFY_TOKEN_FOR_MACARER' must be set to the token associated with the Line room you are sending to.
+
+    Example for run by default:
+        Macarer().examine_battery()
+
+    Example for run with specific battery limits:
+        Macarer(battery_upper_limit=0.80,
+                battery_lower_limit=0.40).examine_battery()
+
+    Example for run with specific line notify token:
+        Macarer(line_notify_token='0123456789abcdefghijk').examine_battery()
     """
 
     # The url of the Line Notify API
@@ -32,6 +44,14 @@ class Macarer:
     # The unix command for battery state
     __IOREG_CHARGE_COMMAND = '/usr/sbin/ioreg -l | /usr/bin/grep ExternalChargeCapable'
 
+    # The template of message
+    __MESSAGE_TEMPLATE = """
+Detected {title} of MacBook that you own.
+
+{caution} to optimize the battery condition of your MacBook.
+Current Battery rate: {current_capacity}%
+    """
+
     def __init__(self, battery_upper_limit=0.71, battery_lower_limit=0.31, line_notify_token=str(getenv('LINE_NOTIFY_TOKEN_FOR_MACARER'))):
         """
         The constructor.
@@ -39,7 +59,7 @@ class Macarer:
         Args:
             battery_upper_limit (float, optional): The upper limit of the battery. Defaults to 0.71.
             battery_lower_limit (float, optional): The lower limit of the battery. Defaults to 0.31.
-            line_notify_token ([type], optional): The token associated with the room of Line Notify. Defaults to str(getenv('LINE_NOTIFY_TOKEN_FOR_MACARER')).
+            line_notify_token (str, optional): The token associated with the room of Line Notify. Defaults to str(getenv('LINE_NOTIFY_TOKEN_FOR_MACARER')).
         """
 
         self.__BATTERY_UPPER_LIMIT = battery_upper_limit
@@ -59,10 +79,12 @@ class Macarer:
 
             if self.__is_charging_battery():
                 if current_rate >= self.__BATTERY_UPPER_LIMIT:
-                    self.__send_notification('test')
+                    self.__send_notification(
+                        title='the insufficient charging', current_capacity=str(current_capacity))
             else:
                 if current_rate <= self.__BATTERY_LOWER_LIMIT:
-                    self.__send_notification('test')
+                    self.__send_notification(
+                        title='the overcharging', current_capacity=str(current_capacity))
 
     def __get_battery_capacities(self):
         """
@@ -79,18 +101,18 @@ class Macarer:
         max_capacity = 0
         current_capacity = 0
 
-        for st in capacities:
-            ar = st.split('=')
-            key = re.sub('^(.*?")', '', ar[0]).replace('" ', '')
+        for capacity in capacities:
+            entry_set = capacity.split('=')
+            key = re.sub('^(.*?")', '', entry_set[0]).replace('" ', '')
 
             if (key == 'MaxCapacity'):
-                max_capacity = ar[1].strip()
+                max_capacity = entry_set[1].strip()
             elif key == 'CurrentCapacity':
-                current_capacity = ar[1].strip()
+                current_capacity = entry_set[1].strip()
 
         return max_capacity, current_capacity
 
-    def __is_charging_battery(self):
+    def __is_charging_battery(self) -> bool:
         """
         Tests whether the MacBook is charging or not.
 
@@ -101,16 +123,19 @@ class Macarer:
         return True if subprocess.check_output(self.__IOREG_CHARGE_COMMAND, shell=True).decode(
             'utf-8').strip().split('=')[1].strip() == 'Yes' else False
 
-    def __send_notification(self, message):
+    def __send_notification(self, title: str, current_capacity: str):
         """
         Send the notification to the Line room associated with the token using the Line Notify API.
 
         Args:
-            message str: The message of notification
+            title (str): The title of the message
+            current_capacity (str): The current capacity of the battery
         """
 
+        caution = 'Stop charging MacBook' if 'overcharging' in title else 'Charge MacBook'
+
         requests.post(self.__LINE_NOTIFY_API, headers={
-            'Authorization': 'Bearer ' + self.__LINE_NOTIFY_TOKEN}, params={'message': message})
+            'Authorization': 'Bearer ' + self.__LINE_NOTIFY_TOKEN}, params={'message': self.__MESSAGE_TEMPLATE.format(title=title, caution=caution, current_capacity=current_capacity).strip()})
 
 
 if __name__ == '__main__':
