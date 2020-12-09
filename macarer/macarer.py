@@ -26,14 +26,14 @@ class Macarer:
     By default, the environment variable 'LINE_NOTIFY_TOKEN_FOR_MACARER' must be set to the token associated with the Line room you are sending to.
 
     Example for run by default:
-        Macarer().examine_battery()
+        Macarer().examine()
 
     Example for run with specific battery limits:
         Macarer(battery_upper_limit=0.80,
-                battery_lower_limit=0.40).examine_battery()
+                battery_lower_limit=0.40).examine()
 
     Example for run with specific line notify token:
-        Macarer(line_notify_token='0123456789abcdefghijk').examine_battery()
+        Macarer(line_notify_token='0123456789abcdefghijk').examine()
     """
 
     # The url of the Line Notify API
@@ -66,7 +66,7 @@ Current Battery rate: {current_capacity}%
         self.__BATTERY_LOWER_LIMIT = battery_lower_limit
         self.__LINE_NOTIFY_TOKEN = line_notify_token
 
-    def examine_battery(self):
+    def examine(self):
         """
         Check MacBook's battery status and remaining charge and send a notification to the Line room associated with the token. Send nitification when the battery is charging and has exceeded the upper limit, or the battery is not charging and is below the lower limit.
         """
@@ -80,11 +80,15 @@ Current Battery rate: {current_capacity}%
             if self.__is_charging_battery():
                 if current_rate >= self.__BATTERY_UPPER_LIMIT:
                     self.__send_notification(
-                        title='the insufficient charging', current_capacity=str(current_capacity))
+                        title='the insufficient charging',
+                        current_capacity=str(current_capacity)
+                    )
             else:
                 if current_rate <= self.__BATTERY_LOWER_LIMIT:
                     self.__send_notification(
-                        title='the overcharging', current_capacity=str(current_capacity))
+                        title='the overcharging',
+                        current_capacity=str(current_capacity)
+                    )
 
     def __get_battery_capacities(self):
         """
@@ -132,11 +136,15 @@ Current Battery rate: {current_capacity}%
             current_capacity (str): The current capacity of the battery
         """
 
-        caution = 'Stop charging MacBook' if 'overcharging' in title else 'Charge MacBook'
-
-        requests.post(self.__LINE_NOTIFY_API, headers={
-            'Authorization': 'Bearer ' + self.__LINE_NOTIFY_TOKEN}, params={'message': self.__MESSAGE_TEMPLATE.format(title=title, caution=caution, current_capacity=current_capacity).strip()})
+        requests.post(
+            self.__LINE_NOTIFY_API,
+            headers={'Authorization': 'Bearer ' + self.__LINE_NOTIFY_TOKEN},
+            params={'message': self.__MESSAGE_TEMPLATE.format(
+                title=title,
+                caution='Stop charging MacBook' if 'overcharging' in title else 'Charge MacBook',
+                current_capacity=current_capacity
+            ).strip()})
 
 
 if __name__ == '__main__':
-    Macarer().examine_battery()
+    pass
