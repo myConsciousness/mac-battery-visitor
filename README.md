@@ -1,10 +1,11 @@
 # Macarer: Carer for the battery of your important MacBook
 
 [![PyPI version](https://badge.fury.io/py/macarer.svg)](https://badge.fury.io/py/macarer)
-[![Python Versions](https://img.shields.io/pypi/pyversions/macarer.svg)](https://pypi.org/project/polar-macarer/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/macarer.svg)](https://pypi.org/project/macarer/)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 **Table of Contents**
 
 - [What is it?](#what-is-it)
