@@ -90,7 +90,7 @@ Current Battery rate: {current_capacity}%
             if self.__is_charging_battery():
                 if current_rate >= self.__BATTERY_UPPER_LIMIT:
                     self.__send_notification(
-                        title='the insufficient charging',
+                        title='the undercharge',
                         current_capacity=str(current_capacity)
                     )
             else:
