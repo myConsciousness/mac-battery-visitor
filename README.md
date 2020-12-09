@@ -2,7 +2,8 @@
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
+
+**_Table of Contents_**
 
 - [What is it?](#what-is-it)
 - [Benefits](#benefits)
@@ -42,9 +43,9 @@ If `Macarer` detects an overcharge and undercharge condition, it uses the `LINE 
 
 Read [public documentation](https://notify-bot.line.me/en/) and create the token of LINE Notify API.
 
-> > **_Note:_**</br>
-> > The tokens you create in this step are required.</br>
-> > This token will be used to send notifications to Notify room on LINE.
+> **_Note:_**</br>
+> The tokens you create in this step are required.</br>
+> This token will be used to send notifications to Notify room on LINE.
 
 ### **_2: Set Environment Variable (optional)_**
 
@@ -54,8 +55,8 @@ Set the token created in the above step to environment variable.
 export LINE_NOTIFY_TOKEN_FOR_MACARER=0123456789abcdefghijk
 ```
 
-> > **_Note:_**</br>
-> > This step is not necessary if you want to pass in the token you created as an argument.
+> **_Note:_**</br>
+> This step is not necessary if you want to pass in the token you created as an argument.
 
 ### **_3: Install or Clone Macarer_**
 
@@ -119,8 +120,8 @@ macarer
 macarer upper_limit=0.65, lower_limit=0.21, line_notify_token=0123456789abcdefghijk
 ```
 
-> > **_Note:_**</br>
-> > With specific options, the above format is required.
+> **_Note:_**</br>
+> With specific options, the above format is required.
 
 ## License
 
