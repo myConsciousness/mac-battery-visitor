@@ -1,7 +1,21 @@
 # Macarer: Carer for the battery of your important MacBook
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [What is it?](#what-is-it)
+- [Benefits](#benefits)
+- [How To Use](#how-to-use)
+  - [**_1: Create the TOKEN of LINE Notify API_**](#_1-create-the-token-of-line-notify-api_)
+  - [**_2: Set Environment Variable (optional)_**](#_2-set-environment-variable-optional_)
+  - [**_3: Install or Clone Macarer_**](#_3-install-or-clone-macarer_)
+  - [**_4: Import and Run Macarer_**](#_4-import-and-run-macarer_)
+  - [**_5: Run with the CLI_**](#_5-run-with-the-cli_)
+- [License](#license)
+- [More Information](#more-information)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## What is it?
 
