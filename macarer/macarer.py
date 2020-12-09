@@ -59,8 +59,18 @@ Current Battery rate: {current_capacity}%
         Args:
             battery_upper_limit (float, optional): The upper limit of the battery. Defaults to 0.71.
             battery_lower_limit (float, optional): The lower limit of the battery. Defaults to 0.31.
-            line_notify_token (str, optional): The token associated with the room of Line Notify. Defaults to str(getenv('LINE_NOTIFY_TOKEN_FOR_MACARER')).
+            line_notify_token (str, optional): The token associated with the room of Line Notify.
+
+        Raises:
+            ValueError: When the upper limit is less than 0.1, or the lower limit is less than 0.1
+            ValueError: When the token is empty
         """
+
+        if battery_upper_limit < 0.1 or battery_lower_limit < 0.1:
+            raise ValueError(
+                'The upper and lower limits must be greater than 0.0.')
+        elif not line_notify_token:
+            raise ValueError('A valid token must be specified.')
 
         self.__BATTERY_UPPER_LIMIT = battery_upper_limit
         self.__BATTERY_LOWER_LIMIT = battery_lower_limit
