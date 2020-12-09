@@ -29,9 +29,9 @@ def execute():
     """
     Executes the process of Macarer.
 
-    If you specify arguments, please enter them in the following format.
+    If you specify arguments, please input them in the following format.
 
-    $ macarer upper_limit=float_number lower_limit=float_number line_notify_token=token_associated_with_line_room'
+    macarer upper_limit=float_number lower_limit=float_number line_notify_token=token_associated_with_line_room'
 
     Therefore following format:
         macarer upper_limit=0.71 lower_limit=0.41
